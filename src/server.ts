@@ -18,7 +18,7 @@ function buildServer() {
     {
       description:
         'List the services that send traces, or, given a service, the operations (span names) it handles and calls, by span kind. Use this first to learn what to search for.',
-      inputSchema: { service: z.string().nullable().describe('A service name, or null to list all services') },
+      inputSchema: { service: z.string().nullish().describe('A service name, or null to list all services') },
     },
     ({ service }) => text(() => listTraceOperations(service ?? undefined)),
   );
@@ -29,15 +29,15 @@ function buildServer() {
         'Find recent traces for a service and summarize each one: services involved, errors and where they happened, and the business attributes on its spans. Starts with a tally of attribute values across the traces.',
       inputSchema: {
         service: z.string().describe('Service whose spans must appear in the trace, for example "checkout"'),
-        operation: z.string().nullable().describe('Exact operation (span name) from list_trace_operations, or null'),
-        errorsOnly: z.boolean().nullable().describe('true to return only traces with a failed span'),
+        operation: z.string().nullish().describe('Exact operation (span name) from list_trace_operations, or null'),
+        errorsOnly: z.boolean().nullish().describe('true to return only traces with a failed span'),
         attributes: z
           .record(z.string(), z.string())
-          .nullable()
+          .nullish()
           .describe('Span attributes that must match exactly, for example {"demo.product.id": "OLJCESPC7Z"}, or null'),
-        minDurationMs: z.number().nullable().describe('Only traces at least this slow, or null'),
-        lookbackMinutes: z.number().nullable().describe('How far back to search, default 15'),
-        limit: z.number().nullable().describe('How many traces to summarize, default 10, max 20'),
+        minDurationMs: z.number().nullish().describe('Only traces at least this slow, or null'),
+        lookbackMinutes: z.number().nullish().describe('How far back to search, default 15'),
+        limit: z.number().nullish().describe('How many traces to summarize, default 10, max 20'),
       },
     },
     (input) => text(() => searchTraces(input)),
