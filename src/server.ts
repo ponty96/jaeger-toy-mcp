@@ -19,6 +19,7 @@ function buildServer() {
       description:
         'List the services that send traces, or, given a service, the operations (span names) it handles and calls, by span kind. Use this first to learn what to search for.',
       inputSchema: { service: z.string().nullish().describe('A service name, or null to list all services') },
+      annotations: { readOnlyHint: true },
     },
     ({ service }) => text(() => listTraceOperations(service ?? undefined)),
   );
@@ -39,6 +40,7 @@ function buildServer() {
         lookbackMinutes: z.number().nullish().describe('How far back to search, default 15'),
         limit: z.number().nullish().describe('How many traces to summarize, default 10, max 20'),
       },
+      annotations: { readOnlyHint: true },
     },
     (input) => text(() => searchTraces(input)),
   );
@@ -48,6 +50,7 @@ function buildServer() {
       description:
         'Show one trace as a tree of spans: service, operation, kind, duration, errors and business attributes. Use a trace ID from search_traces or from logs.',
       inputSchema: { traceId: z.string().describe('32-character hex trace ID') },
+      annotations: { readOnlyHint: true },
     },
     ({ traceId }) => text(() => getTrace(traceId)),
   );
