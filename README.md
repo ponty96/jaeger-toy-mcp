@@ -6,6 +6,8 @@ A small MCP server for Jaeger's v3 query API, over streamable HTTP. Its tools re
 - `search_traces`: recent traces for a service, filtered by operation, errors, attributes or duration, with a tally of attribute values across them.
 - `get_trace`: one trace as an indented span tree.
 
+All three only read, and say so with the MCP `readOnlyHint` annotation, so clients that ask before writes (Voice Commander does) run them without asking.
+
 `skill.md` is the matching skill: paste it into the integration's skill in Voice Commander (or any client that takes Markdown instructions).
 
 ## Run
